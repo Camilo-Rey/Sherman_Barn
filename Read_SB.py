@@ -10,6 +10,7 @@ import h5py
 import pandas as pd
 #from datetime import datetime, timedelta
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 dnames = ['WD','H', 'LE', 'wc', 'wm', 'wq', 'wt']
@@ -18,6 +19,9 @@ hf = h5py.File(r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\SB_2019365_L2
 nrows = hf['data']['year'].size
 
 df = pd.DataFrame();
+
+
+
 
 for dn in dnames:
     df[dn] = hf['data'][dn][:].reshape((nrows,))
@@ -38,3 +42,7 @@ df['datetime'] = utall
 df.set_index('datetime')    
 outname = r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\SB_2019365_L2.csv'
 df.to_csv(outname, float_format='%.3f', na_rep='nan')
+
+plt.plot(df['WD'],df['wm'],'.')
+plt.show()
+
