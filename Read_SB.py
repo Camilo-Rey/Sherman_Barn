@@ -16,7 +16,7 @@ from datetime import datetime,timedelta
 
 ## reading L3 files (Flux data)
 
-dnames = ['WD','H', 'LE', 'wc', 'wm', 'wq', 'wt', 'mot']
+dnames = ['WD','H', 'LE', 'wc', 'wm', 'wq', 'wt']
 
 hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_L3.mat', 'r')
 nrows = hf['data']['year'].size
@@ -75,11 +75,10 @@ mf['datetime'] = mtall
 
 ## reading cow count csv file
 
-cow_data = np.array(pd.read_csv('cow_count.csv'))
+cow_data = np.array(pd.read_csv(r'/Users/Lilyk/Desktop/Sherman_Barn_1/cow_count2.csv'))
 
 
 ## datetime for cow count file
-date_cow = datetime(cow_data[:,0],cow_data[:,1],cow_data[:,2],cow_data[:,3],cow_data[:,4])
 nrowsC = len(cow_data[:,0])
 
 date_cow_all = []
@@ -121,8 +120,8 @@ plt.show()
 # First, round to the nearest half-hour
 
 import pandas as pd
-
-RdateCow=pd.date_cow_all.round('30min').to_pydatetime()
+date_cow_pd=np.datetime64(date_cow_all)
+RdateCow=date_cow_pd.round('30min').to_pydatetime()
 
 # Matching
 
