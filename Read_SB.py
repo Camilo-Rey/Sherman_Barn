@@ -120,8 +120,15 @@ plt.show()
 # First, round to the nearest half-hour
 
 import pandas as pd
-date_cow_pd=np.datetime64(date_cow_all)
-RdateCow=date_cow_pd.round('30min').to_pydatetime()
+# date_cow_pd=pd.Timestamp(date_cow_all[0])
+# RdateCow=date_cow_pd.round('30min').to_pydatetime()
+def myfunction(date_cow):
+    date_cow_pd=pd.Timestamp(date_cow)
+    RdateCow=date_cow_pd.round('30min').to_pydatetime()
+    return RdateCow
+
+vfunc = np.vectorize(myfunction)
+rdate_cowf = vfunc(date_cow_all)
 
 # Matching
 
