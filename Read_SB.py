@@ -18,8 +18,8 @@ from datetime import datetime,timedelta
 
 dnames = ['WD','H', 'LE', 'wc', 'wm', 'wq', 'wt']
 
-#hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_L3.mat', 'r')
-hf = h5py.File(r'D:\FluxData\Sherman_Barn\SB_2019365_L3.mat', 'r')
+hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_L3.mat', 'r')
+#hf = h5py.File(r'D:\FluxData\Sherman_Barn\SB_2019365_L3.mat', 'r')
 nrows = hf['data']['year'].size
 
 df = pd.DataFrame();
@@ -43,8 +43,8 @@ df['datetime'] = utall
 
 ## Exporting file
 df.set_index('datetime')    
-#outname = r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_export.csv'
-outname = r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_2019365_export.csv'
+outname = r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_export.csv'
+#outname = r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_2019365_export.csv'
 df.to_csv(outname, float_format='%.3f', na_rep='nan')
 
 
@@ -52,8 +52,8 @@ df.to_csv(outname, float_format='%.3f', na_rep='nan')
 
 dnames = ['Mot', 'Mdate_met']
 
-#hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SBMet_2019365.mat', 'r')
-hf = h5py.File(r'D:\FluxData\Sherman_Barn/met/SBMet_2019365.mat', 'r')
+hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SBMet_2019365.mat', 'r')
+#hf = h5py.File(r'D:\FluxData\Sherman_Barn/met/SBMet_2019365.mat', 'r')
 nrows = hf['data']['TA'].size
 
 mf = pd.DataFrame();
@@ -78,8 +78,8 @@ mf['datetime'] = mtall
 
 ## reading cow count csv file
 
-#cow_data = np.array(pd.read_csv(r'/Users/Lilyk/Desktop/Sherman_Barn_1/cow_count2.csv'))
-cow_data = np.array(pd.read_csv(r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_code_share/cow_count.csv'))
+cow_data = np.array(pd.read_csv(r'/Users/Lilyk/Desktop/Sherman_Barn_1/cow_count2.csv'))
+#cow_data = np.array(pd.read_csv(r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_code_share/cow_count.csv'))
 
 
 ## datetime for cow count file
@@ -137,11 +137,16 @@ rdate_cowf = vfunc(date_cow_all)
 
 # Matching
 
-ixs=np.where(np.datetime64(df['datetime'])== np.datetime64(rdate_cowf))
 
 IXS=[]
 for pn in range(0,nrowsC):
     ixs=np.where(df['datetime']== np.datetime64(rdate_cowf[pn]))
-    IXS.append(ixs)
+    ix2=int(ixs[0])
+    IXS.append(ix2)
+    
+
+# Indexing L3 variables
+    
+wmf = df[IXS,5]
 
 
