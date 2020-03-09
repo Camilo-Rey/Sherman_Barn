@@ -147,6 +147,36 @@ for pn in range(0,nrowsC):
 
 # Indexing L3 variables
     
-wmf = df[IXS,5]
+#matlab notation: wmf = df[IXS,5]
+wm = df['wm']
+wmf = [wm[i] for i in IXS]
+
+Mot = mf['Mot']
+Motf = [Mot[i] for i in IXS]
+
+datetime = df['datetime']
+datetimef = [datetime[i] for i in IXS]
+
+wd = df['WD']
+wdf = pd.Series([wd[i] for i in IXS])
+
+wdix = wdf>260
+
+Motff=Motf[wdix]
+
+# plotting 
+
+plt.plot(Motf, wmf, '.')
+plt.xlabel('cows (motion sensor data)')
+plt.ylabel('methane flux (nmol m^-2s^-1)')
+plt.show()
 
 
+plt.plot(datetimef, cow_data[:,5], marker='', color='blue')
+plt.plot(datetimef, Motf, marker='', color='olive')
+plt.show()
+
+plt.plot(cow_data[:,5], Motf, '.')
+plt.xlabel('phenocam cow count')
+plt.ylabel('motion sensor cow count')
+plt.show()
