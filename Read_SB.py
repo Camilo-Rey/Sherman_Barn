@@ -18,8 +18,8 @@ from datetime import datetime,timedelta
 
 dnames = ['WD','H', 'LE', 'wc', 'wm', 'wq', 'wt']
 
-hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_L3.mat', 'r')
-#hf = h5py.File(r'D:\FluxData\Sherman_Barn\SB_2019365_L3.mat', 'r')
+#f = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_L3.mat', 'r')
+hf = h5py.File(r'D:\FluxData\Sherman_Barn\SB_2019365_L3.mat', 'r')
 nrows = hf['data']['year'].size
 
 df = pd.DataFrame();
@@ -43,8 +43,8 @@ df['datetime'] = utall
 
 ## Exporting file
 df.set_index('datetime')    
-outname = r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_export.csv'
-#outname = r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_2019365_export.csv'
+#outname = r'/Users/Lilyk/Desktop/Sherman_Barn_1/SB_2019365_export.csv'
+outname = r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_2019365_export.csv'
 df.to_csv(outname, float_format='%.3f', na_rep='nan')
 
 
@@ -52,8 +52,8 @@ df.to_csv(outname, float_format='%.3f', na_rep='nan')
 
 dnames = ['Mot', 'Mdate_met']
 
-hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SBMet_2019365.mat', 'r')
-#hf = h5py.File(r'D:\FluxData\Sherman_Barn/met/SBMet_2019365.mat', 'r')
+#hf = h5py.File(r'/Users/Lilyk/Desktop/Sherman_Barn_1/SBMet_2019365.mat', 'r')
+hf = h5py.File(r'D:\FluxData\Sherman_Barn/met/SBMet_2019365.mat', 'r')
 nrows = hf['data']['TA'].size
 
 mf = pd.DataFrame();
@@ -78,8 +78,8 @@ mf['datetime'] = mtall
 
 ## reading cow count csv file
 
-cow_data = np.array(pd.read_csv(r'/Users/Lilyk/Desktop/Sherman_Barn_1/cow_count2.csv'))
-#cow_data = np.array(pd.read_csv(r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_code_share/cow_count.csv'))
+#cow_data = np.array(pd.read_csv(r'/Users/Lilyk/Desktop/Sherman_Barn_1/cow_count2.csv'))
+cow_data = np.array(pd.read_csv(r'C:\Users\biomet\Box Sync\UC-Berkeley\Sherman_Barn\Code\SB_code_share/cow_count.csv'))
 
 
 ## datetime for cow count file
@@ -146,30 +146,42 @@ for pn in range(0,nrowsC):
     
 
 # Indexing L3 variables
+# We start with a Pandas data frame, then we index one column to create a pandas series
+# And then we index based on IXS and create a list (wmf)
+    # This list is converted to a panda series and then to a numpy array
     
 #matlab notation: wmf = df[IXS,5]
 wm = df['wm']
-wmf = [wm[i] for i in IXS]
+wmf = pd.Series([wm[i] for i in IXS]).to_numpy()
 
 Mot = mf['Mot']
-Motf = [Mot[i] for i in IXS]
+Motf = pd.Series([Mot[i] for i in IXS]).to_numpy()
 
 datetime = df['datetime']
-datetimef = [datetime[i] for i in IXS]
+datetimef = pd.Series([datetime[i] for i in IXS]).to_numpy()
 
 wd = df['WD']
-wdf = pd.Series([wd[i] for i in IXS])
+wdf = pd.Series([wd[i] for i in IXS]).to_numpy()
 
-wdix = wdf>260
+wdix=wdf>260
 
 Motff=Motf[wdix]
+wmff=wmf[wdix]
 
 # plotting 
 
+# All
 plt.plot(Motf, wmf, '.')
 plt.xlabel('cows (motion sensor data)')
 plt.ylabel('methane flux (nmol m^-2s^-1)')
 plt.show()
+
+# With filter
+plt.plot(Motff, wmff, '.')
+plt.xlabel('cows (motion sensor data)')
+plt.ylabel('methane flux (nmol m^-2s^-1)')
+plt.show()
+
 
 
 plt.plot(datetimef, cow_data[:,5], marker='', color='blue')
