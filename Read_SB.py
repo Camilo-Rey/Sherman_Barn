@@ -106,6 +106,7 @@ plt.xlabel('time')
 plt.ylabel('motion sensor counts')
 plt.show()
 
+
 plt.plot(date_cow_all,cow_data[:,5])
 plt.xlabel('date')
 plt.ylabel('cow count')
@@ -180,7 +181,7 @@ plt.show()
 plt.plot(Motff, wmff, '.')
 plt.xlabel('cows (motion sensor data)')
 plt.ylabel('methane flux (nmol m^-2s^-1)')
-plt.show()
+plt.show()  
 
 
 
